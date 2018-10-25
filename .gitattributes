@@ -1,0 +1,10 @@
+.gitattributes export-ignore
+.gitignore export-ignore
+/docs export-ignore
+/tests export-ignore
+CHANGELOG.md export-ignore
+README.md export-ignore
+license.md export-ignore
+contributing.md export-ignore
+phpunit.xml export-ignore
+composer.lock -diff
