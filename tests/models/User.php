@@ -5,6 +5,7 @@ namespace Jijoel\AuthApi\Tests\Models;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Jijoel\AuthApi\LinkedSocialAccount;
 
 class User extends Authenticatable
 {
@@ -18,9 +19,9 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    // public function linkedSocialAccounts()
-    // {
-    //     return $this->hasMany(LinkedSocialAccount::class);
-    // }
+    public function linkedSocialAccounts()
+    {
+        return $this->hasMany(LinkedSocialAccount::class);
+    }
 
 }
