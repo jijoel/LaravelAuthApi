@@ -31,7 +31,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Jijoel\\AuthApi\\Tests\\": "tests"
+            "Jijoel\\AuthApi\\Tests\\": "tests",
+            "App\\": "stubs"
         }
     },
     "extra": {

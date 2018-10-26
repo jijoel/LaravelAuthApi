@@ -1,6 +1,6 @@
 <?php
 
-namespace Jijoel\AuthApi\Providers;
+namespace Jijoel\AuthApi;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -13,7 +13,7 @@ class AuthApiServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'jijoel');
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'jijoel');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'jijoel');
         // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         // $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
@@ -63,22 +63,22 @@ class AuthApiServiceProvider extends ServiceProvider
 
         $this->registerMigrations();
 
-        $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
+        // $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
 
         // Publishing the views.
         /*$this->publishes([
             __DIR__.'/../resources/views' => base_path('resources/views/vendor/jijoel'),
-        ], 'laravelauthapi.views');*/
+        ], 'auth-api.views');*/
 
         // Publishing assets.
         /*$this->publishes([
             __DIR__.'/../resources/assets' => public_path('vendor/jijoel'),
-        ], 'laravelauthapi.views');*/
+        ], 'auth-api.assets');*/
 
         // Publishing the translation files.
-        /*$this->publishes([
+        $this->publishes([
             __DIR__.'/../resources/lang' => resource_path('lang/vendor/jijoel'),
-        ], 'laravelauthapi.views');*/
+        ], 'auth-api.lang');
 
         // Registering package commands.
         // $this->commands([
@@ -101,4 +101,5 @@ class AuthApiServiceProvider extends ServiceProvider
             __DIR__.'/../database/migrations' => database_path('migrations'),
         ], 'auth-api.migrations');
     }
+
 }
