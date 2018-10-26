@@ -13,7 +13,10 @@
     "keywords": ["Laravel", "API", "Authentication"],
     "require": {
         "illuminate/support": "~5",
-        "doctrine/dbal": "^2.8"
+        "doctrine/dbal": "^2.8",
+        "laravel/passport": "^7.0",
+        "laravel/socialite": "^3.2",
+        "tightenco/ziggy": "v0.6.8.1"
     },
     "require-dev": {
         "phpunit/phpunit": "~7.0",
