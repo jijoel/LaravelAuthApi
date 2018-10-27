@@ -14,8 +14,8 @@ class AuthApiServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'jijoel');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'jijoel');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         // $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
 
         // Publishing is only necessary when using the CLI.
@@ -56,24 +56,13 @@ class AuthApiServiceProvider extends ServiceProvider
      */
     protected function bootForConsole()
     {
-        // Publishing the configuration file.
         $this->publishes([
             __DIR__.'/../config/auth-api.php' => config_path('auth-api.php'),
         ], 'auth-api.config');
 
-        $this->registerMigrations();
-
-        // $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
-
-        // Publishing the views.
-        /*$this->publishes([
-            __DIR__.'/../resources/views' => base_path('resources/views/vendor/jijoel'),
-        ], 'auth-api.views');*/
-
-        // Publishing assets.
-        /*$this->publishes([
-            __DIR__.'/../resources/assets' => public_path('vendor/jijoel'),
-        ], 'auth-api.assets');*/
+        $this->publishes([
+            __DIR__.'/../database/migrations' => database_path('migrations'),
+        ], 'auth-api.migrations');
 
         // Publishing the translation files.
         $this->publishes([
@@ -81,25 +70,10 @@ class AuthApiServiceProvider extends ServiceProvider
         ], 'auth-api.lang');
 
         // Registering package commands.
-        // $this->commands([
-        //     Console\InstallCommand::class,
-        //     Console\ClientCommand::class,
-        //     Console\KeysCommand::class,
-        // ]);
-    }
-
-    /**
-     * Register our migration files.
-     *
-     * @return void
-     */
-    protected function registerMigrations()
-    {
-        return $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-
-        $this->publishes([
-            __DIR__.'/../database/migrations' => database_path('migrations'),
-        ], 'auth-api.migrations');
+        $this->commands([
+            Console\MakeAuthCommand::class,
+            Console\MakeJsCommand::class,
+        ]);
     }
 
 }
