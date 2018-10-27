@@ -18,6 +18,12 @@ class AuthApiServiceProvider extends ServiceProvider
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'jijoel');
         // $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
 
+        $this->app['blade.compiler']->directive('config', function ($attrs) {
+            return "<?php echo app('"
+                . config('auth-api.config-class', BladeConfigGenerator::class)
+                . "')->generate({$attrs}); ?>";
+        });
+
         // Publishing is only necessary when using the CLI.
         if ($this->app->runningInConsole()) {
             $this->bootForConsole();
@@ -32,11 +38,6 @@ class AuthApiServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/../config/auth-api.php', 'auth-api');
-
-        // Register the service the package provides.
-        // $this->app->singleton('laravel-auth-api', function ($app) {
-        //     return new LaravelAuthApi;
-        // });
     }
 
     /**
