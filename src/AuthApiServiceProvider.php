@@ -3,6 +3,9 @@
 namespace Jijoel\AuthApi;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Foundation\AliasLoader;
+use Illuminate\Contracts\Routing\Registrar as Router;
+use Jijoel\AuthApi\Facades\ApiAuth as AuthFacade;
 
 class AuthApiServiceProvider extends ServiceProvider
 {
@@ -15,14 +18,8 @@ class AuthApiServiceProvider extends ServiceProvider
     {
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'jijoel');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'jijoel');
-        // $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
 
-        $this->app['blade.compiler']->directive('config', function ($attrs) {
-            return "<?php echo app('"
-                . config('auth-api.config-class', BladeConfigGenerator::class)
-                . "')->generate({$attrs}); ?>";
-        });
+        $this->loadBladeConfigDirective();
 
         // Publishing is only necessary when using the CLI.
         if ($this->app->runningInConsole()) {
@@ -38,6 +35,15 @@ class AuthApiServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/../config/auth-api.php', 'auth-api');
+
+        // Register the Facade
+        $loader = AliasLoader::getInstance();
+        $loader->alias('ApiAuth', AuthFacade::class);
+
+        // Register the routes
+        $this->app->singleton('api-auth', function ($app) {
+            return new ApiAuth(app(Router::class));
+        });
     }
 
     /**
@@ -51,6 +57,20 @@ class AuthApiServiceProvider extends ServiceProvider
     }
 
     /**
+     * Define an @config directive for Blade files
+     *
+     * @return String   text generated for @config
+     */
+    public function loadBladeConfigDirective()
+    {
+        $this->app['blade.compiler']->directive('config', function ($attrs) {
+            return "<?php echo app('"
+                . config('auth-api.config-class', BladeConfigGenerator::class)
+                . "')->generate({$attrs}); ?>";
+        });
+    }
+
+    /**
      * Console-specific booting.
      *
      * @return void
@@ -60,6 +80,10 @@ class AuthApiServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/auth-api.php' => config_path('auth-api.php'),
         ], 'auth-api.config');
+
+        $this->publishes([
+            __DIR__.'/../database/factories' => database_path('factories'),
+        ], 'auth-api.factories');
 
         $this->publishes([
             __DIR__.'/../database/migrations' => database_path('migrations'),
