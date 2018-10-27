@@ -10,20 +10,13 @@ use Jijoel\AuthApi\SocialAccountLoader;
 
 trait AuthenticatesWithSocialApi
 {
-    private $loader;
-
-    function __construct(SocialAccountLoader $loader)
-    {
-        $this->loader = $loader;
-    }
-
     /**
      * Redirect the user to the provider authentication page.
      *
      * @param  string $provider
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function redirectToProvider($provider)
+    public function redirectToProvider(String $provider)
     {
         return [
             'url' => Socialite::driver($provider)
@@ -39,13 +32,14 @@ trait AuthenticatesWithSocialApi
      * @param  string $driver
      * @return \Illuminate\Http\Response
      */
-    public function handleProviderCallback($provider)
-    {
+    public function handleProviderCallback(
+        String $provider,
+        SocialAccountLoader $loader
+    ){
         $socialUser = Socialite::driver($provider)
             ->stateless()->user();
 
-        $user = $this->loader
-            ->findOrCreate($socialUser, $provider);
+        $user = $loader->findOrCreate($socialUser, $provider);
 
         $token = $user
             ->createToken('auth_token')

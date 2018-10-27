@@ -9,4 +9,15 @@ use Jijoel\AuthApi\Traits\RegistersWithApi;
 class RegistrationController extends Controller
 {
     use RegistersWithApi;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('guest:api');
+    }
+
 }
