@@ -1,12 +1,11 @@
 Laravel Auth Api
 =====================
 
-[![Latest Version on Packagist][ico-version]][link-packagist]
-[![Total Downloads][ico-downloads]][link-downloads]
-[![Build Status][ico-travis]][link-travis]
-[![StyleCI][ico-styleci]][link-styleci]
+Backend for an api to authenticate users, including both local and social authentication.
 
-Use an api to authenticate users.
+It uses [Laravel Passport][passport] for API authentication and tokens, and [Laravel Socialite][socialite] for social authentication. These packages are automatically included.
+
+In the future, this package will work in conjunction with a front-end component pack.
 
 
 ## Installation
@@ -17,11 +16,7 @@ Via Composer
 $ composer require jijoel/laravel-auth-api
 ```
 
-This package works in conjunction with a front-end component pack, based on [Vuetify](https://vuetify.com). To install the front-end components:
-
-``` bash
-$ yarn add vuetify-api-auth
-```
+## Configuration
 
 To scaffold the authentication controllers:
 
@@ -29,18 +24,10 @@ To scaffold the authentication controllers:
 $ php artisan make:api-auth
 ```
 
-To scaffold front-end components:
-
-``` bash
-$ php artisan make:api-js
-```
-
-## Configuration
-
 To automatically generate routes, include this in `routes/api.php`:
 
 ``` php
-AuthApi::routes();
+ApiAuth::routes();
 ApiAuth::socialRoutes();      // oauth routes
 
 ApiAuth::routes(['social']);  // include oauth routes
@@ -55,31 +42,37 @@ public function linkedSocialAccounts()
 }
 ```
 
-Specify a list of user-selectable language translations for your site by creating a list of locales in `config/app.php`:
-
-``` php
-'locale' => 'en',
-
-'locales' => ['en','es'],   // English and Spanish
-```
-
 ## Usage
 
-`php artisan make:api-auth`
-: Generate authentication controllers
+The `ApiAuth::routes()` method, above, will create these endpoints:
 
-`php artisan make:api-js`
-: Generate front-end javascript files based on vuetify.js
+Methods  | Route                       | Route Name
+---------|-----------------------------|----------------
+POST     | api/login                   | login
+POST     | api/logout                  | logout
+GET|HEAD | api/oauth/{driver}          | oauth.redirect
+GET|HEAD | api/oauth/{driver}/callback | oauth.callback
+POST     | api/password/email          | password.email
+POST     | api/password/reset          | password.reset
+POST     | api/register                | register
+
+It also sets up an @config blade compiler directive, so you can load application-specific configuration into your javascript. By default, it will include this configuration:
+
+    'appName' => config('app.name'),
+    'locale' => $locale = app()->getLocale(),
+    'locales' => config('app.locales'),
+
+
 
 
 ## Change log
 
-Please see the [changelog](changelog.md) for more information on what has changed recently.
+Please see the [changelog](CHANGELOG.md) for more information on what has changed recently.
 
 ## Testing
 
 ``` bash
-$ composer test
+$ phpunit
 ```
 
 ## Contributing
@@ -95,18 +88,13 @@ If you discover any security related issues, please [email](mailto://jijoel@yaho
 - [Author][link-author]
 - [All Contributors][link-contributors]
 
+https://medium.com/@hivokas/api-authentication-via-social-networks-for-your-laravel-application-d81cfc185e60
+
 ## License
 
 license. Please see the [license file](license.md) for more information.
 
-[ico-version]: https://img.shields.io/packagist/v/jijoel/laravel-auth-api.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/jijoel/laravel-auth-api.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/jijoel/laravel-auth-api/master.svg?style=flat-square
-[ico-styleci]: https://styleci.io/repos/12345678/shield
-
-[link-packagist]: https://packagist.org/packages/jijoel/laravel-auth-api
-[link-downloads]: https://packagist.org/packages/jijoel/laravel-auth-api
-[link-travis]: https://travis-ci.org/jijoel/laravel-auth-api
-[link-styleci]: https://styleci.io/repos/12345678
 [link-author]: https://github.com/jijoel
 [link-contributors]: contributors.md
+[passport]: https://laravel.com/docs/passport
+[socialite]: https://laravel.com/docs/socialite

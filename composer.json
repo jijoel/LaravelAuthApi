@@ -1,7 +1,7 @@
 {
     "name": "jijoel/laravel-auth-api",
     "description": "An authentication api built for Laravel",
-    "license": "license",
+    "license": "MIT",
     "authors": [
         {
             "name": "Joel Hatch",
@@ -12,7 +12,7 @@
     "homepage": "https://github.com/jijoel/laravel-auth-api",
     "keywords": ["Laravel", "API", "Authentication"],
     "require": {
-        "illuminate/support": "~5",
+        "illuminate/support": "^5.0",
         "doctrine/dbal": "^2.8",
         "laravel/passport": "^7.0",
         "laravel/socialite": "^4.0",

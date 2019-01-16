@@ -97,7 +97,8 @@ class AuthApiServiceProvider extends ServiceProvider
         // Registering package commands.
         $this->commands([
             Console\MakeAuthCommand::class,
-            Console\MakeJsCommand::class,
+            // TODO: Build front-end project
+            // Console\MakeJsCommand::class,
         ]);
     }
 

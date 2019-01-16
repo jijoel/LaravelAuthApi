@@ -66,6 +66,9 @@ class MakeJsCommand extends Command
      */
     public function handle()
     {
+        $this->info('This feature has not been implemented');
+        return;
+
         $this->createDirectories();
         $this->copyFiles();
 
